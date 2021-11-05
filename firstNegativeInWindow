@@ -1,0 +1,26 @@
+// Given an array and a positive integer k, find the first negative integer for each and every window(contiguous subarray) of size k.
+// sliding window
+
+
+vector<long long> printFirstNegativeInteger(long long int A[], long long int N, long long int K) {
+
+        deque<int> temp;  // deque to store all negatives.
+        vector<long long> ans;
+        int i = 0;  // window start
+        
+        for(int j = 0; j < N; j++){
+            if(A[j] < 0) temp.push_back(A[j]);
+
+            if(j - i + 1 == K){  // when subarray is of size K
+                if(temp.size() == 0) ans.push_back(0);  // if no negative in deque
+                else{
+                    ans.push_back(temp.front());  // else the first negative that came
+                    if(A[i] == temp.front()) temp.pop_front();  // now we'll move the window, if previous start element is the neg number added, we remove it from deque so that it is not considered again.
+                }
+                i++;  // moving the window start
+            }
+        }
+        
+        return ans;
+ }
+

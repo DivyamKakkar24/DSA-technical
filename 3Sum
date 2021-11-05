@@ -1,0 +1,39 @@
+// Given an integer array a, return all the triplets [a[i], a[j], a[k]] such that i != j, i != k, and j != k, and a[i] + a[j] + a[k] == 0.
+
+// Notice that the solution set must not contain duplicate triplets.
+
+
+// Intuition:  (x + y + z) == 0 
+				(y + z) = -x  problem reduced to 2sum
+
+// dry run: -2, -2, -1, -1, -1, 0, 0, 0, 2, 2, 2
+
+nums = list(map(int, input().split()))
+nums.sort()  // first sort in ascending
+
+ans = []
+for i in range(len(nums) - 2):  // iterating for x
+    if (i == 0) or (i > 0 and (nums[i] != nums[i - 1])):   // check to avoid duplicates
+        sum = 0 - nums[i]  // -x
+ 
+        low = i + 1
+        high = len(nums) - 1
+
+        while low < high:   // problem reduced to 2sum
+            if (nums[low] + nums[high]) == sum:  // triplet found
+                ans.append([nums[i], nums[low], nums[high]])
+                last_y = nums[low]
+                last_z = nums[high]
+    
+                while (low < high) and (nums[low] == last_y):  // check to avoid duplicates
+                    low += 1
+                while (low < high) and (nums[high] == last_z):  // check to avoid duplicates
+                    high -= 1
+            elif (nums[low] + nums[high]) < sum:
+                low += 1
+            else:
+                high -= 1
+    
+print(ans)
+
+ 

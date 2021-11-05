@@ -1,0 +1,22 @@
+// Given an array, move all the 0 to the left while maintaining the order of the other elements.
+
+// Two pointers technique: read and write starting at the end of the array
+
+// If read is on 0, decrement read. Otherwise swap, decrement both.  (dry run: 1 0 2 0 3 0)
+
+// Inplace and stable.
+
+a = list(map(int, input().split()))
+
+r, w = len(a) - 1, len(a) - 1  // start from end
+
+while r >= 0:
+    if a[r] == 0:
+        r -= 1
+    else:
+        a[r], a[w] = a[w], a[r]
+        r -= 1
+        w -= 1
+
+print(a)
+
