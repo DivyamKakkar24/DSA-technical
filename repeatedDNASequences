@@ -1,0 +1,29 @@
+// Given a string s that represents a DNA sequence, return all the 10-letter-long sequences (substrings) that occur more than once in a 
+// DNA molecule. You may return the answer in any order.
+
+
+// code in python
+
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        net = {}
+        ans = set()
+        i = 0
+        t = ''
+        
+        for j in range(len(s)):
+            t += s[j]
+            
+            if (j - i + 1 == 10):
+                if t in net:
+                    net[t] += 1
+                else:
+                    net[t] = 1
+                    
+                if net[t] > 1:
+                    ans.add(t)
+                i += 1
+                t = t[1:]
+        
+        return ans
+        
