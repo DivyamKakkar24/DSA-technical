@@ -1,0 +1,52 @@
+// Hackerrank Problem: Roads and Libraries
+
+count = 0
+       
+def roadsAndLibraries(n, X, Y, cities):
+    net = [0] * (n + 1)
+    
+    # making graph as Adjacency List
+    graph = dict()            
+    for i in range(len(cities)):
+        u, v = cities[i][0], cities[i][1]
+        graph[u] = graph.get(u, []) + [v]
+        graph[v] = graph.get(v, []) + [u]
+    
+    # function for DFS
+    def dfs(i, graph):
+        global count
+        net[i] = 1
+        count += 1
+        if i in graph:
+            l = graph.get(i)
+            for city in l:
+                if (net[city] == 0):
+                    dfs(city, graph)
+        
+    ans = 0
+    for i in range(1, n + 1):
+        if (net[i] == 0):
+            global count
+            count = 0
+            dfs(i, graph)
+            
+            if (X <= Y):
+                ans += (X * count)
+            else:
+                ans += (X + (count - 1) * Y)
+    
+    return ans
+
+
+queries = int(input())
+
+for _ in range(queries):
+    n, m, X, Y = map(int, input().split())
+    cities = []
+    for i in range(m):
+        city = list(map(int, input().split()))[:2]
+        cities.append(city)
+    
+    finalCost = roadsAndLibraries(n, X, Y, cities)
+    
+    print(finalCost)
