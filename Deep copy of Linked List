@@ -1,0 +1,66 @@
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, x: int, next: 'Node' = None, random: 'Node' = None):
+        self.val = int(x)
+        self.next = next
+        self.random = random
+"""
+
+# Approach 1: Using Hashmap
+class Solution:
+    def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
+        if not head:
+            return head
+        
+        temp = head
+        deepCopy = dict()
+        
+        while temp:
+            deepCopy[temp] = Node(temp.val)
+            temp = temp.next
+        
+        temp = head
+        while temp:
+            if temp.next:
+                deepCopy[temp].next = deepCopy[temp.next]
+            if temp.random:
+                deepCopy[temp].random = deepCopy[temp.random]
+            temp = temp.next
+        
+        return deepCopy[head]
+
+
+# 2. Optimal Solution (without extra space)
+class Solution:
+    def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
+        if not head:
+            return head
+        
+        # Make deep Copy nodes
+        temp = head
+        while temp:
+            nxt = temp.next
+            temp.next = Node(temp.val)
+            temp.next.next = nxt
+            temp = nxt
+        
+        # Set the random pointers
+        temp = head
+        while temp:
+            if temp.random:
+                curr = temp.next
+                curr.random = temp.random.next
+            temp = temp.next.next
+        
+        # Separate the linked lists
+        dummy = curr = head.next
+        while curr.next:
+            head.next = curr.next
+            head = head.next
+            curr.next = head.next
+            curr = curr.next
+        
+        head.next = None
+        
+        return dummy
