@@ -1,0 +1,39 @@
+// Codechef problem: 
+// To find Longest Non-decreasing subsequence length => O(NlogN) approach which uses Binary Search and Dynamic Programming.
+
+def bs(tar, net):       # Can use lower_bound() in c++. In python, can also use bisect_left().
+    low, high = 0, len(net) - 1
+    while low < high:
+        mid = (low + high) // 2
+        if net[mid] > tar:
+            high = mid
+        else:
+            low = mid + 1
+    
+    return high
+
+def longestNonDecreasingSubsequence(a):
+    net = [a[0]]
+
+    for i in range(1, len(a)):
+        if a[i] >= net[-1]:
+            net.append(a[i])
+        else:
+            k = bs(a[i], net)
+            net[k] = a[i]
+    
+    return len(net)
+
+t = int(input())
+
+while t != 0:
+    n, m = map(int, input().split())
+    a = list(map(int, input().split()))[:n]
+    b = list(map(int, input().split()))[:m]
+
+    l1 = longestNonDecreasingSubsequence(a)
+    l2 = longestNonDecreasingSubsequence(b)
+
+    print(l1 + l2)
+
+    t -= 1
