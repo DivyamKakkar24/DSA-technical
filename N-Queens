@@ -1,0 +1,41 @@
+// LeetCode: N-Queens
+// The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.
+// Return all distinct solutions.
+
+class Solution:
+    def arrange_board(self, board):
+        new_board = []
+        for row in board:
+            new_board.append(''.join(row))
+        return new_board
+    
+    def solve(self, row, cols, diagonals, anti_diagonals, board, ans):
+        if row == len(board): # n
+            ans.append(self.arrange_board(board))
+            return
+        
+        for col in range(len(board)):
+            curr_diag = row - col
+            curr_anti_diag = row + col
+            if (col in cols) or (curr_diag in diagonals) or (curr_anti_diag in anti_diagonals):
+                continue
+            
+            cols.add(col)
+            diagonals.add(curr_diag)
+            anti_diagonals.add(curr_anti_diag)
+            board[row][col] = 'Q'
+            self.solve(row + 1, cols, diagonals, anti_diagonals, board, ans)
+            
+            board[row][col] = '.'
+            cols.remove(col)
+            diagonals.remove(curr_diag)
+            anti_diagonals.remove(curr_anti_diag)
+            
+        
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        ans = []
+        board = [['.'] * n for i in range(n)]
+        self.solve(0, set(), set(), set(), board, ans)
+        
+        return ans
+        
