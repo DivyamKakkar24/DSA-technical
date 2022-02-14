@@ -1,0 +1,30 @@
+// Disjoint Set - Python
+
+n, q = map(int, input().split())
+
+parent = [i for i in range(n + 1)]
+
+def find(x):
+    if parent[x] == x:
+        return x
+    return find(parent[x])
+
+def union_op(u, v):
+    abroot1 = find(u)
+    abroot2 = find(v)
+    if abroot1 < abroot2:
+        parent[abroot2] = abroot1
+    else:
+        parent[abroot1] = abroot2
+
+for i in range(q):
+    a, u, v = map(int, input().split())
+
+    if a == 0:
+        union_op(u, v)
+    elif a == 1:
+        if find(u) == find(v):
+            print(1)
+        else:
+            print(0)
+
