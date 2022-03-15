@@ -1,0 +1,36 @@
+// Palindrome Partitioning: Return the minimum cuts needed for a palindrome partitioning of s.
+
+class Solution:
+    def isPalindrome(self, s, i, j):
+        st = s[i:j + 1]
+        
+        return st == st[::-1]
+        
+    def solve(self, s, i, j, dp):
+        if i >= j:
+            return 0
+        
+        if self.isPalindrome(s, i, j):
+            return 0
+        
+        if dp[i][j] != -1:
+            return dp[i][j]
+        
+        ans = float('inf')
+        
+        for k in range(i, j):
+            if self.isPalindrome(s, i, k):
+                c1 = self.solve(s, k + 1, j, dp)
+                net = c1 + 1
+                ans = min(ans, net)
+            
+            
+        dp[i][j] = ans
+        return dp[i][j]
+        
+    
+    def minCut(self, s: str) -> int:
+        n = len(s)
+        dp = [[-1] * (n + 1) for i in range(n + 1)]
+        return self.solve(s, 0, n - 1, dp)
+        
