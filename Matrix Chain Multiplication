@@ -1,0 +1,40 @@
+// Given the order of matrices, find the minimum cost of optimal multiplication.
+// Order of M = A[i - 1] X A[i]
+
+
+def mcm_Recursive(A, i, j):
+	if i >= j:
+		return 0
+
+	ans = float('inf')
+	for k in range(i, j):  				# k is (i to j - 1)
+		tempAns = mcm_Recursive(A, i, k) + mcm_Recursive(A, k + 1, j) + (A[i - 1] * A[k] * A[j])
+
+		ans = min(ans, tempAns)
+
+	return ans
+
+def mcm_Memoization(A, i, j, dp):
+	if i >= j:
+		return 0
+
+	if dp[i][j] != -1:
+		return dp[i][j]
+
+	ans = float('inf')
+	for k in range(i, j):
+		tempAns = mcm_Memoization(A, i, k, dp) + mcm_Memoization(A, k + 1, j, dp) + (A[i - 1] * A[k] * A[j])
+
+		ans = min(ans, tempAns)
+
+	dp[i][j] = ans
+	return dp[i][j]
+
+
+A = [40, 20, 30, 10, 30]
+n = len(A)
+
+dp = [[-1] * (n + 1) for i in range(n + 1)]
+
+print(mcm_Recursive(A, 1, n - 1))
+print(mcm_Memoization(A, 1, n - 1, dp))
