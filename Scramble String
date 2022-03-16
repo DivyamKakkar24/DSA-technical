@@ -1,0 +1,41 @@
+// LC 87.
+
+// C++
+
+class Solution {
+public:
+    map<string, bool> memo;
+    
+    bool solve(string s1, string s2){
+        if(s1.compare(s2) == 0)
+            return true;
+        
+        if(s1.size() == 1)
+            return false;
+        
+        string key = s1 + " " + s2;
+        
+        if(memo.find(key) != memo.end())
+            return memo[key];
+
+        int n = s1.size();
+        bool flag = false;
+        for(int i = 1; i <= n - 1; i++){
+            bool swap = solve(s1.substr(0, i), s2.substr(n - i)) && solve(s1.substr(i), s2.substr(0, n - i));
+            bool noSwap = solve(s1.substr(0, i), s2.substr(0, i)) && solve(s1.substr(i), s2.substr(i));
+            
+            if(swap || noSwap){
+                flag = true;
+                break;
+            }
+        }
+        
+        memo[key] = flag;
+        return memo[key];
+    }
+    
+    bool isScramble(string s1, string s2) {
+        return solve(s1, s2); 
+        
+    }
+};
