@@ -1,0 +1,25 @@
+// Given a string s, partition s such that every substring of the partition is a palindrome. Return all possible palindrome partitioning of s.
+
+
+class Solution:
+    def isPalin(self, st):
+        return st == st[::-1]
+    
+    def solve(self, s, curr, ans):
+        if s == '':
+            ans.append(curr.copy())
+            return
+        
+        for i in range(1, len(s) + 1):
+            pre = s[:i]
+            rem = s[i:]
+            
+            if self.isPalin(pre):
+                self.solve(rem, curr + [pre], ans)
+
+    
+    def partition(self, s: str) -> List[List[str]]:
+        ans = []
+        self.solve(s, [], ans)
+        return ans
+        
