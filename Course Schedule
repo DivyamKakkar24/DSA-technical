@@ -1,0 +1,31 @@
+// LC: Topological Sorting (with BFS, Kahns Algorithm)
+
+class Solution:
+    def canFinish(self, n: int, preq: List[List[int]]) -> bool:
+        adj = defaultdict(list)
+        indegree = defaultdict(int)
+        
+        for i in preq:
+            u, v = i
+            adj[v].append(u)
+            indegree[u] += 1
+        
+        Q = deque()
+        count = 0
+        for i in range(n):
+            if indegree[i] == 0:
+                Q.append(i)
+                count += 1
+        
+        while Q:
+            course = Q.popleft()
+            dependentCourses = adj[course]
+            for c in dependentCourses:
+                indegree[c] -= 1
+                if indegree[c] == 0:
+                    Q.append(c)
+                    count += 1
+                        
+        if count != n:
+            return False
+        return True
