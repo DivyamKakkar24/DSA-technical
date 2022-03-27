@@ -1,0 +1,35 @@
+// Dijkstra Algorithm
+
+class Solution:
+    def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
+        adj = collections.defaultdict(list)
+        
+        for i in times:
+            u, v, w = i
+            adj[u].append([v, w])
+        
+        distfromsource = [float('inf') for i in range(n + 1)]
+        distfromsource[k] = 0
+        
+        minHeap = []
+        
+        heappush(minHeap, [0, k])
+        
+        while minHeap:
+            d, node = heappop(minHeap)
+            l = adj[node]
+            
+            for neighbor in l:
+                i = neighbor[0]
+                weight = neighbor[1]
+                
+                if distfromsource[i] > (d + weight):
+                    distfromsource[i] = (d + weight)
+                    heappush(minHeap, [distfromsource[i], i])
+        
+        ans = max(distfromsource[1:])
+        
+        if ans == float('inf'):
+            return -1
+        
+        return ans
