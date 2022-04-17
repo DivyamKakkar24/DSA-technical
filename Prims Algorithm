@@ -1,0 +1,55 @@
+// To find the minimum spanning tree for given graph.
+// TC: O(V^2) here.  (O(ElogV) with binary heap)
+
+INF = float('inf')
+
+def selectMinVertex(dist, addedToMST):
+    mini = INF
+    node = -1
+
+    for i in range(len(dist)):
+        if not addedToMST[i] and dist[i] < mini:
+            mini = dist[i]
+            node = i
+    
+    return node
+
+
+def primsMST(graph):
+    V = len(graph)
+    dist = [INF] * V
+    addedToMST = [False] * V
+    parent = [-1] * V
+
+    dist[0] = 0  # source vertex
+
+    for i in range(V - 1):   # v - 1 edges
+        u = selectMinVertex(dist, addedToMST)    # selecting minimum dist vertex greedy method
+        addedToMST[u] = True   # included in mst
+
+        for j in range(V):     # computing adjacent vertices
+            # 3 conditions:-
+                - Edge is between u and j
+                - vertex j is not in mst
+                - edge weight is smaller
+
+            if graph[u][j] != 0 and not addedToMST[j] and dist[j] > graph[u][j]:
+                dist[j] = graph[u][j]
+                parent[j] = u
+    
+
+    for i in range(1, V):
+        print(parent[i], '->', i, ':', dist[i])
+
+
+V = 6
+
+graph = [[0, 4, 6, 0, 0, 0],
+            [4, 0, 6, 3, 4, 0],
+            [6, 6, 0, 1, 8, 0],
+            [0, 3, 1, 0, 2, 3],
+            [0, 4, 8, 2, 0, 7],
+            [0, 0, 0, 3, 7, 0]]
+
+primsMST(graph)
+
