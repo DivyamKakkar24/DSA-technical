@@ -1,0 +1,30 @@
+// LC: 1584
+
+class Solution:
+    def minCostConnectPoints(self, points: List[List[int]]) -> int:
+        n = len(points)
+        
+        minHeap = []
+        
+        mst = [0] * n
+        
+        heappush(minHeap, [0, 0])   # [distance / weight, index of point]
+        cost = 0
+        edges = 0
+        
+        while edges != n:
+            weight, currPoint = heappop(minHeap)
+            
+            if mst[currPoint]:
+                continue
+            
+            mst[currPoint] = 1
+            cost += weight
+            edges += 1
+            for i in range(n):
+                if not mst[i]:
+                    man_dist = abs(points[currPoint][0] - points[i][0]) + abs(points[currPoint][1] - points[i][1])
+                    heappush(minHeap, [man_dist, i])
+            
+        return cost
+
