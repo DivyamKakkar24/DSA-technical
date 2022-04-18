@@ -1,0 +1,33 @@
+// LC: 123
+
+# Non-DP solution, but intuition is good.
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        # First traversal: Assuming selling the stock on ith day, calculating profit
+        sellati_Profit = [0] * len(prices)
+        min_cost = prices[0]
+        
+        for i in range(1, len(prices)):
+            min_cost = min(min_cost, prices[i])
+            profit = prices[i] - min_cost
+            sellati_Profit[i] = max(sellati_Profit[i - 1], profit)
+        
+        # Second traversal: Backwards, assuming buying stock on ith day, calculating profit
+        buyati_Profit = [0] * len(prices)
+        max_cost = prices[-1]
+        
+        for i in range(len(prices) - 2, -1, -1):
+            max_cost = max(max_cost, prices[i])
+            profit = max_cost - prices[i]
+            buyati_Profit[i] = max(buyati_Profit[i + 1], profit)
+        
+        # Final Maximum Profit after 2 Traversals
+        ans = 0
+        for i in range(len(prices)):
+            profit = sellati_Profit[i] + buyati_Profit[i]
+            ans = max(ans, profit)
+        
+        return ans
+            
+ 
