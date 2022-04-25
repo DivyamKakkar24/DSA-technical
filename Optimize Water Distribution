@@ -1,0 +1,67 @@
+LC: 1168
+
+// Good MST Problem. Do Revise.
+// Used Prims Algorithm
+
+n = 5
+wells = [1, 2, 2, 3, 2]
+pipe = [[1, 2, 1], [2, 3, 1], [4, 5, 7]]
+
+graph = [[-1 for i in range(n + 1)] for j in range(n + 1)]
+
+
+def build_graph(n, wells, pipe):
+    for p in pipe:
+        house1, house2, cost = p
+
+        graph[house1][house2] = cost
+        graph[house2][house1] = cost
+
+    for i in range(n):
+        graph[0][i + 1] = wells[i]
+        graph[i + 1][0] = wells[i]
+    
+    return graph
+
+
+def selectMinVertex(dist, mst):
+    mini = float('inf')
+    node = -1
+
+    for i in range(len(dist)):
+        if not mst[i] and dist[i] < mini:
+            mini = dist[i]
+            node = i
+    
+    return node
+
+
+def solve(n, wells, pipe):
+    graph = build_graph(n, wells, pipe)
+    # print(*graph)
+    mst = [0] * (n + 1)
+    dist = [float('inf')] * (n + 1)
+
+    dist[0] = 0
+
+    V = n + 1
+
+    for i in range(V - 1):
+        u = selectMinVertex(dist, mst)
+        mst[u] = 1
+
+        for j in range(V):
+            if graph[u][j] != -1 and not mst[j] and dist[j] > graph[u][j]:
+                dist[j] = graph[u][j]
+
+    ans = 0
+    for i in dist:
+        ans += i
+
+    print(*dist)
+    return ans
+
+ans = solve(n, wells, pipe)
+
+print(ans)
+
