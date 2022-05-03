@@ -1,0 +1,26 @@
+// From LC Daily Challenge: Q. 581
+
+class Solution:
+    def findUnsortedSubarray(self, A: List[int]) -> int:
+        end = 0
+        maxi = A[0]
+        
+        for i in range(1, len(A)):
+            if A[i] < maxi:
+                end = i
+            else:
+                maxi = A[i]
+            
+        start = len(A) - 1
+        mini = A[start]
+        
+        for j in range(len(A) - 2, -1, -1):
+            if A[j] > mini:
+                start = j
+            else:
+                mini = A[j]
+        
+        # Pointers don't move: then array is sorted
+        if start != len(A) - 1:
+            return end - start + 1
+        return 0    
