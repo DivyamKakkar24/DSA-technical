@@ -1,0 +1,40 @@
+// DP Approach
+
+
+def solveTSP(cities, visited, currCity, n, DP):
+
+    if visited == ((1 << n) - 1):   #(2 ** n - 1)
+        return cities[currCity][0]
+
+    if DP[visited][currCity] != -1:
+        return DP[visited][currCity]
+    
+
+    net = float('inf')
+
+    for city in range(n):
+        # only if city is unvisited
+        if city != currCity:
+            if (visited & (1 << city)) == 0:
+                temp = cities[currCity][city] + solveTSP(cities, visited | (1 << city), city, n, DP)
+                net = min(net, temp)
+    
+    DP[visited][currCity] = net
+    
+    return DP[visited][currCity]
+
+
+if __name__ == '__main__':
+
+    cities = [[0, 20, 42, 25],
+            [20, 0, 30, 34],
+            [42, 30, 0, 10],
+            [25, 34, 10, 0]]
+
+    n = 4
+    DP = [[-1] * n for i in range(1 << n)]
+
+    # func(cities, 0000, startCity, vertices)
+    ans = solveTSP(cities, 0, 0, n, DP)
+
+    print(ans)
