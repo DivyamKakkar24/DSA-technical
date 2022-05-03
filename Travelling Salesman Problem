@@ -1,0 +1,36 @@
+// Given a list of cities and the distances between each pair of cities, what is the shortest possible route 
+// that visits each city exactly once and returns to the origin city?
+
+
+
+def solveTSP(cities, visited, currCity, n):
+
+    if visited == ((1 << n) - 1):   #(2 ** n - 1)
+        return cities[currCity][0]
+    
+
+    net = float('inf')
+
+    for city in range(n):
+        # only if city is unvisited
+        if city != currCity:
+            if (visited & (1 << city)) == 0:
+                temp = cities[currCity][city] + solveTSP(cities, visited | (1 << city), city, n)
+                net = min(net, temp)
+    
+    return net
+
+
+if __name__ == '__main__':
+
+    cities = [[0, 20, 42, 25],
+            [20, 0, 30, 34],
+            [42, 30, 0, 10],
+            [25, 34, 10, 0]]
+
+    n = 4
+
+    # func(cities, 0000, startCity, vertices)
+    ans = solveTSP(cities, 0, 0, n)
+
+    print(ans)
