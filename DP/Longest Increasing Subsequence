@@ -1,0 +1,77 @@
+// Given an integer array, return the length of the longest strictly increasing subsequence.
+
+# Recursion-> Time: O(2^n), Space: O(n) Auxiliary Space
+
+class Solution:
+    def recursive(self, i, prev, A):
+        if i == len(A):
+            return 0
+        
+        take = 0
+        dontake = self.recursive(i + 1, prev, A)
+        if prev == -1 or A[i] > A[prev]:
+            take = 1 + self.recursive(i + 1, i, A)
+        
+        return max(take, dontake)
+    
+    def lengthOfLIS(self, A: List[int]) -> int:
+        ans = self.recursive(0, -1, A)
+        
+        return ans
+
+---------------------------------------------------------------------------------
+
+# DP-> Time: O(n^2), Space: O(n)
+
+# DP[i] = length of LIS ending at i index element.
+
+class Solution:
+    def lengthOfLIS(self, A: List[int]) -> int:
+        n = len(A)
+        DP = [1] * n
+        
+        for i in range(1, n):
+            for j in range(i):
+                if (A[i] > A[j]) and (DP[j] + 1 > DP[i]):
+                    DP[i] = DP[j] + 1
+        
+        ans = 1
+        
+        for i in DP:
+            if i > ans:
+                ans = i
+        
+        return ans
+
+---------------------------------------------------------------------------------
+
+# Binary Search: O(nlog(n))
+
+class Solution:
+    def BS(self, x, net):
+        low, high = 0, len(net) - 1
+        
+        while low < high:
+            mid = (low + high) // 2
+            if net[mid] >= x:
+                high = mid
+            else:
+                low = mid + 1
+        
+        return low
+        
+    def lengthOfLIS(self, A: List[int]) -> int:
+        n = len(A)
+        net = [A[0]]
+        
+        for i in range(1, n):
+            if A[i] > net[-1]:
+                net.append(A[i])
+            else:
+                ind = self.BS(A[i], net)
+                net[ind] = A[i]
+        
+        return len(net)
+
+
+
