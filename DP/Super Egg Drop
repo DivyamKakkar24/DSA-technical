@@ -1,0 +1,38 @@
+// For e eggs, f floors.
+// Used Memoization + Binary Search
+
+class Solution:
+    def solve(self, e, f, memo): 
+        if e == 1 or f <= 1:
+            return f
+        
+        key = (e, f)
+        if key in memo:
+            return memo[key]
+        
+        ans = float('inf') 
+        low, high = 1, f
+        
+        while low <= high:
+            mid = (low + high) // 2
+            
+            eggBreak = self.solve(e - 1, mid - 1, memo)
+            eggDontBreak = self.solve(e, f - mid, memo)
+            
+            temp = 1 + max(eggBreak, eggDontBreak)
+            
+            if eggBreak > eggDontBreak:
+                high = mid - 1
+            else:
+                low = mid + 1
+            
+            ans = min(ans, temp)
+            
+        memo[key] = ans
+        return ans
+        
+        
+    def superEggDrop(self, e: int, f: int) -> int:
+        memo = dict() 
+        
+        return self.solve(e, f, memo)
