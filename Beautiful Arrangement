@@ -1,0 +1,24 @@
+// LC: 526
+// Simple Backtracking template
+
+
+class Solution:
+    def countArrangement(self, n: int) -> int:
+        ans = 0
+        
+        def solve(pos, n, having):
+            nonlocal ans
+            if pos == n + 1:
+                ans += 1
+
+            for i in range(1, n + 1):  # try every number for a position
+                if i not in having and (pos % i == 0 or i % pos == 0):
+                    having.add(i)
+                    solve(pos + 1, n, having)
+                    having.remove(i)
+                    
+        solve(1, n, set())
+        
+        return ans
+        
+        
