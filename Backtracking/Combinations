@@ -1,0 +1,22 @@
+// LC: 77
+
+class Solution:
+    def solve(self, start, n, k, curr, ans):
+        if len(curr) == k:
+            ans.append(curr.copy())
+            return
+        
+        for i in range(start, n + 1):
+            curr.append(i)
+            self.solve(i + 1, n, k, curr, ans)
+            curr.pop()
+                
+    
+    def combine(self, n: int, k: int) -> List[List[int]]:
+        ans = []
+        curr = []
+        
+        self.solve(1, n, k, curr, ans)
+        
+        return ans
+        

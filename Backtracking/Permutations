@@ -1,0 +1,26 @@
+// LC: 46
+
+class Solution:
+    def solve(self, pos, A, used, curr, ans):
+        if pos == len(A):
+            ans.append(curr.copy())
+            return
+        
+        for i in A:
+            if i not in used:
+                curr.append(i)
+                used.add(i)
+                self.solve(pos + 1, A, used, curr, ans)
+                used.remove(i)
+                curr.pop()
+        
+    
+    def permute(self, A: List[int]) -> List[List[int]]:
+        ans = []
+        curr = []
+        
+        self.solve(0, A, set(), curr, ans)
+        
+        return ans
+        
+        

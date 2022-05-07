@@ -1,0 +1,50 @@
+// LC: 39
+
+# 1.
+class Solution:
+    def solve(self, idx, s, target, A, curr, ans):
+        if s == target:
+            ans.append(curr.copy())
+            return
+            
+        if idx == len(A):
+            return
+        
+        if s + A[idx] <= target:
+            curr.append(A[idx])
+            self.solve(idx, s + A[idx], target, A, curr, ans)
+            curr.pop()
+        
+        self.solve(idx + 1, s, target, A, curr, ans)
+        
+    
+    def combinationSum(self, A: List[int], target: int) -> List[List[int]]:
+        ans = []
+        curr = []
+        
+        self.solve(0, 0, target, A, curr, ans, dict())
+        
+        return ans
+
+
+# 2.
+class Solution:
+    def solve(self, idx, target, A, curr, ans):
+        if target == 0:
+            ans.append(curr.copy())
+            return
+        
+        for i in range(idx, len(A)):
+            if A[idx] > target:
+                break
+            self.solve(i, target - A[i], A, curr + [A[i]], ans)
+    
+    
+    def combinationSum(self, A: List[int], target: int) -> List[List[int]]:
+        ans = []
+        curr = []
+        A.sort()
+        self.solve(0, target, A, curr, ans)
+        
+        return ans
+        

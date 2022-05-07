@@ -1,0 +1,25 @@
+// LC: 40
+
+class Solution:
+    def solve(self, idx, target, A, curr, ans):
+        if target == 0:
+            ans.append(curr.copy())
+            return
+        
+        for i in range(idx, len(A)):
+            if i > idx and A[i] == A[i - 1]:
+                continue
+            if A[i] <= target:
+                curr.append(A[i])
+                self.solve(i + 1, target - A[i], A, curr, ans)
+                curr.pop()
+    
+    
+    def combinationSum2(self, A: List[int], target: int) -> List[List[int]]:
+        ans = []
+        A.sort()
+        
+        self.solve(0, target, A, [], ans)
+        
+        return ans
+        
