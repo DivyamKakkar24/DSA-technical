@@ -1,0 +1,26 @@
+// LC: 47
+
+class Solution:
+    def solve(self, pos, n, net, curr, ans):
+        if pos == n:
+            ans.append(curr.copy())
+            return
+        
+        for ele in net:
+            if net[ele] > 0:
+                curr.append(ele)
+                net[ele] -= 1
+                self.solve(pos + 1, n, net, curr, ans)
+                net[ele] += 1
+                curr.pop()
+            
+    
+    def permuteUnique(self, A: List[int]) -> List[List[int]]:
+        ans = []
+        curr = []
+        net = collections.Counter(A)
+        
+        self.solve(0, len(A), net, curr, ans)
+        
+        return ans
+        
