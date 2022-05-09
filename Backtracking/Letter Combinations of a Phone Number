@@ -1,0 +1,28 @@
+// LC: 17
+
+class Solution:
+    def solve(self, pos, A, curr, ans):
+        if pos == len(A):
+            if curr == '':
+                return
+            ans.append(curr)
+            return
+        
+        for i in A[pos]:
+            self.solve(pos + 1, A, curr + i, ans)
+        
+    
+    def letterCombinations(self, digits: str) -> List[str]:
+        net = {
+            '2': 'abc', '3': 'def', '4': 'ghi',
+            '5': 'jkl', '6': 'mno', '7': 'pqrs',
+            '8': 'tuv', '9': 'wxyz'
+        }
+        
+        A = [net[i] for i in digits]
+        ans = []
+        
+        self.solve(0, A, '', ans)
+        
+        return ans
+        
