@@ -1,0 +1,26 @@
+// LC: 239
+// Maximum of each window of size k
+
+class Solution:
+    def maxSlidingWindow(self, A: List[int], k: int) -> List[int]:
+        
+        DQ = deque()
+        ans = []
+        
+        for i in range(len(A)):
+            x = A[i]
+            
+            while len(DQ) > 0 and DQ[0] < i - k + 1:
+                DQ.popleft()
+            
+            while len(DQ) > 0 and A[DQ[-1]] <= x:
+                DQ.pop()
+            
+            DQ.append(i)
+            
+            if i >= k - 1:
+                ans.append(A[DQ[0]])
+        
+        return ans
+            
+        
