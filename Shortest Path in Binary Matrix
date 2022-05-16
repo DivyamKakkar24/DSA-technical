@@ -1,0 +1,37 @@
+// 1091. Shortest Path in Binary Matrix
+
+class Solution:
+    def shortestPathBinaryMatrix(self, grid: List[List[int]]) -> int:
+        Q = deque()
+        
+        n = len(grid)
+        
+        if grid[0][0] == 0:
+            Q.append([0, 0])
+            
+        visited = [[0] * n for i in range(n)]
+        visited[0][0] = 1
+        
+        steps = 0
+        moves = [[1, 1], [1, 0], [0, 1], [-1, 0], [0, -1], [-1, -1], [1, -1], [-1, 1]]
+        
+        while len(Q) > 0:
+            l = len(Q)
+            
+            for i in range(l):
+                curr = Q.popleft()
+                r, c = curr[0], curr[1]
+                
+                if r == n - 1 and c == n - 1:
+                    return steps + 1
+                 
+                for (x, y) in moves:
+                    if (r + x < n and r + x >= 0) and (c + y < n and c + y >= 0) and grid[r + x][c + y] == 0 and visited[r + x][c + y] == 0:
+                        Q.append([r + x, c + y])
+                        visited[r + x][c + y] = 1
+            
+            steps += 1        
+        
+        return -1
+        
+        
