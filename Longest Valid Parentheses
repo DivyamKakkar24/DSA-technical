@@ -1,0 +1,55 @@
+// Longest Valid Parentheses
+
+# Time: O(n), Space: O(n)
+class Solution:
+    def longestValidParentheses(self, s: str) -> int:
+        maxL = 0
+        stack = [-1]
+        
+        for i in range(len(s)):
+            if s[i] == '(':
+                stack.append(i)
+            else:
+                stack.pop()
+                if stack == []:
+                    stack.append(i)
+                else:
+                    l = i - stack[-1]
+                    maxL = max(maxL, l)
+        
+        return maxL
+
+
+# Time: O(n), Space: O(1)
+class Solution:
+    def longestValidParentheses(self, s: str) -> int:
+        o, c = 0, 0
+        maxL = 0
+        
+        for i in range(len(s)):   # left to right
+            if s[i] == '(':
+                o += 1
+            else:
+                c += 1
+            
+            if o == c:
+                l = o + c
+                maxL = max(maxL, l)
+            elif c > o:
+                o = c = 0
+        
+        o, c = 0, 0
+        for i in range(len(s) - 1, -1, -1):   # right to left
+            if s[i] == ')':
+                o += 1
+            else:
+                c += 1
+            
+            if o == c:
+                l = o + c
+                maxL = max(maxL, l)
+            elif c > o:
+                o = c = 0
+        
+        return maxL
+
