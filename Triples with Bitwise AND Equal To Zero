@@ -1,0 +1,25 @@
+// LC: 982
+
+class Solution {
+public:
+    int countTriplets(vector<int>& A) {
+        unordered_map<int, int> net;
+        
+        int ans = 0;
+        
+        for(int &a: A){
+            for(int &b: A){
+                net[a & b]++;
+            }
+        }
+        
+        for(int &a: A){
+            for(auto x: net){
+                if((a & x.first) == 0)
+                    ans += x.second;
+            }
+        }
+        
+        return ans;
+    }
+};
