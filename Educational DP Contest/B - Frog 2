@@ -1,0 +1,33 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    // Speed improvement
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n, k;
+    cin >> n >> k;
+
+    long long A[n];
+
+    for(int i = 0; i < n; i++){
+        cin >> A[i];
+    }
+
+    long long dp[n];
+    dp[0] = 0;
+
+    for(int i = 1; i < n; i++){
+        long long net = INT_MAX;
+        for(int j = 1; j <= k; j++){
+            if(i - j >= 0){
+                net = min(net, dp[i - j] + abs(A[i] - A[i - j]));
+            }
+        }
+        dp[i] = net;
+    }
+
+    cout << dp[n - 1];
+
+}

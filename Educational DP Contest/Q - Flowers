@@ -1,0 +1,38 @@
+import sys
+import collections
+from math import ceil, gcd, sqrt, log
+import bisect
+
+INF = float('inf')
+mod = 1000000007
+
+# LIS based
+
+def solve():
+    n = int(input())
+    H = list(map(int, input().split()))
+    A = list(map(int, input().split()))
+    
+    DP = [A[i] for i in range(n)]
+
+    for i in range(n):
+        for j in range(i):
+            if H[j] < H[i] and DP[j] + A[i] > DP[i]:
+                DP[i] = DP[j] + A[i]
+
+    maxBeauty = 0
+
+    for a in DP:
+        if a > maxBeauty:
+            maxBeauty = a 
+    
+    print(maxBeauty)
+
+
+t = 1
+
+while t != 0:
+    solve()
+
+    t -= 1
+    

@@ -1,0 +1,43 @@
+import sys
+import collections
+from math import ceil, gcd, sqrt, log
+import bisect
+
+INF = float('inf')
+mod = 1000000007
+
+
+def solve():
+    n = int(input())
+    P = list(map(float, input().split()))
+    
+    DP = [[0] * (n + 1) for i in range(n)]
+
+    DP[0][0] = 1 - P[0]
+    DP[0][1] = P[0]
+    # DP[i][j] = Probability of getting j heads till ith index coin
+
+    for i in range(1, n):
+        for j in range(n + 1):
+            # getting Tail
+            DP[i][j] += (1 - P[i]) * DP[i - 1][j]
+
+            # getting Head
+            if j > 0:
+                DP[i][j] += (P[i] * DP[i - 1][j - 1])
+
+    ans = 0
+
+    for i in range(n // 2 + 1, n + 1):
+        ans += DP[n - 1][i]
+    
+    print(ans)
+
+
+t = 1
+
+while t != 0:
+    solve()
+
+    t -= 1
+    

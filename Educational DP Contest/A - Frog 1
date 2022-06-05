@@ -1,0 +1,29 @@
+import collections
+from math import ceil, gcd, sqrt, log
+
+INF = float('inf')
+mod = 1000000007
+
+
+def solve():
+    n = int(input())
+    A = list(map(int, input().split()))
+    
+    dp = [0] * (n)
+    # dp[i] = Minimum cost incurred on reaching stone i
+
+    for i in range(1, n):
+        dp[i] = dp[i - 1] + abs(A[i] - A[i - 1])
+        if i - 2 >= 0:
+            dp[i] = min(dp[i], dp[i - 2] + abs(A[i] - A[i - 2]))
+    
+    print(dp[n - 1])
+
+
+t = 1
+
+while t != 0:
+    solve()
+
+    t -= 1
+    

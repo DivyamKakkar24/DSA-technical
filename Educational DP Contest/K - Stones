@@ -1,0 +1,37 @@
+import sys
+import collections
+from math import ceil, gcd, sqrt, log
+import bisect
+
+
+INF = float('inf')
+mod = 1000000007
+
+
+def solve():
+    n, k = map(int, input().split())
+    A = list(map(int, input().split()))
+    
+    DP = [0] * (k + 1)
+
+    # DP[i] = 1, if player 1 WIN, with i stones left in pile.
+
+    for i in range(k + 1):
+        for x in A:
+            if i >= x and DP[i - x] == 0:
+                DP[i] = 1
+                break
+    
+    if DP[k]:
+        print('First')
+    else:
+        print('Second')
+
+
+t = 1
+
+while t != 0:
+    solve()
+
+    t -= 1
+    

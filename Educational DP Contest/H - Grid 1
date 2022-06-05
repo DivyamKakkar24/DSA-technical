@@ -1,0 +1,53 @@
+import sys
+import collections
+from math import ceil, gcd, sqrt, log
+import bisect
+sys.setrecursionlimit(10**8)
+
+INF = float('inf')
+mod = 1000000007
+
+
+def solve():
+    m, n = map(int, input().split())
+
+    grid = []
+
+    for i in range(m):
+        a = input()[:n]
+        grid.append(a)
+    
+    memo = dict()
+
+    def progress(i, j):
+        if i == m - 1 and j == n - 1:
+            return 1
+
+        key = (i, j)
+        if key in memo:
+            return memo[key]
+
+        right, down = 0, 0
+
+        if i + 1 < m and grid[i + 1][j] != '#':
+            down = progress(i + 1, j)
+        
+        if j + 1 < n and grid[i][j + 1] != '#':
+            right = progress(i, j + 1)
+        
+        memo[key] = right + down
+        return memo[key]
+
+
+    ans = progress(0, 0)
+    
+    print(ans % mod)
+
+
+t = 1
+
+while t != 0:
+    solve()
+
+    t -= 1
+    

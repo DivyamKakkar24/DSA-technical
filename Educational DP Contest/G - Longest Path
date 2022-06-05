@@ -1,0 +1,53 @@
+import collections
+from math import ceil, gcd, sqrt, log
+import bisect
+import sys
+sys.setrecursionlimit(10**7)
+
+INF = float('inf')
+mod = 1000000007
+
+
+def solve():
+    n, m = map(int, input().split())
+
+    graph = collections.defaultdict(list)
+
+    for i in range(m):
+        u, v = map(int, input().split())
+
+        graph[u - 1].append(v - 1)
+    
+    dp = [0] * (n)
+    visited = [0] * (n)
+
+    def dfs_dp(node):
+        if visited[node]:
+            return dp[node]
+
+        net = 0
+        for nbr in graph[node]:
+            net = max(net, 1 + dfs_dp(nbr))
+
+        dp[node] = net
+
+        visited[node] = 1
+        return dp[node]
+
+    for i in range(n):
+        dfs_dp(i)
+    
+    ans = 0
+    for i in dp:
+        ans = max(ans, i)
+
+    print(ans)
+
+
+t = 1
+
+while t != 0:
+    solve()
+
+    t -= 1
+    

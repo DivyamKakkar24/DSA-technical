@@ -1,0 +1,35 @@
+import collections
+from math import ceil, gcd, sqrt, log
+
+INF = float('inf')
+mod = 1000000007
+
+
+def solve():
+    n = int(input())
+    A = []
+    for i in range(n):
+        a = list(map(int, input().split()))
+        A.append(a)
+    
+    dp = [[0] * 3 for i in range(n)]
+    dp[0] = A[0]
+
+    # dp[i][j] = Maximum points on ith day doing jth activity
+
+    for i in range(1, n):
+        for j in range(3):
+            for k in range(3):
+                if k != j:
+                    dp[i][j] = max(dp[i][j], A[i][j] + dp[i - 1][k])
+    
+    print(max(dp[n - 1]))
+
+
+t = 1
+
+while t != 0:
+    solve()
+
+    t -= 1
+    
