@@ -1,0 +1,27 @@
+// LC: Sum Root to Leaf Numbers
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+class Solution:
+    def paths(self, ps, root):
+        if root == None:
+            return 0
+        
+        net = ps * 10 + root.val
+        
+        if root.left == None and root.right == None:
+            return net
+        
+        return self.paths(net, root.left) + self.paths(net, root.right)
+    
+    
+    def sumNumbers(self, root: Optional[TreeNode]) -> int:
+        ans = self.paths(0, root)
+        
+        return ans
+        
