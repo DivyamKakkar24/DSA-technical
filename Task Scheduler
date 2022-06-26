@@ -1,0 +1,37 @@
+// Task Scheduler
+
+class Solution:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        net = Counter(tasks)
+        
+        maxHeap = []
+        
+        for freq in net.values():
+            maxHeap.append(-freq)
+        
+        heapify(maxHeap)
+        
+        time = 0
+        Q = deque()  # Hold the tasks: (-freq, idleTime)
+        
+        while len(maxHeap) > 0 or len(Q) > 0:
+            time += 1
+            
+            if len(maxHeap) > 0:
+                taskCount = -heappop(maxHeap)
+                taskCount -= 1
+                
+                if taskCount > 0:
+                    t = time + n
+                    Q.append((taskCount, t))
+            
+            if len(Q) > 0 and Q[0][1] == time:
+                task = Q.popleft()
+                heappush(maxHeap, -task[0])
+        
+        return time
+            
+                
+                
+                
+        

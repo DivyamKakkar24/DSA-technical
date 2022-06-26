@@ -1,0 +1,47 @@
+// Find Median from Data Stream
+
+class MedianFinder:
+
+    def __init__(self):
+        # 2 heaps: left is MAX heap & right is MIN heap (maintain same size)
+        
+        self.left = []
+        self.right = []
+
+    def addNum(self, num: int) -> None:
+        heappush(self.left, -num)
+        
+        # every element in left should be <= every element in right
+        if self.left and self.right and (-self.left[0] > self.right[0]):
+            x = heappop(self.left) # from Max heap
+            heappush(self.right, -1 * x) # to min heap
+        
+        # Maintain balance
+        if len(self.left) - len(self.right) > 1:
+            x = heappop(self.left) # from Max heap
+            heappush(self.right, -1 * x) # to min heap
+            
+        if len(self.right) - len(self.left) > 1:
+            x = heappop(self.right) # from Min heap
+            heappush(self.left, -1 * x) # to max heap
+        
+
+    def findMedian(self) -> float:
+        
+        if len(self.left) != len(self.right):
+            if len(self.left) > len(self.right):
+                return (-1 * self.left[0])
+            else:
+                return self.right[0]
+        else:
+            net = (-self.left[0] + self.right[0]) / 2
+            return net
+        
+        
+        
+
+
+# Your MedianFinder object will be instantiated and called as such:
+# obj = MedianFinder()
+# obj.addNum(num)
+# param_2 = obj.findMedian()
