@@ -1,0 +1,68 @@
+// All Nodes Distance K in Binary Tree
+
+// 1. BFS to find parent of all nodes (to traverse in upwards direction), storing in a hashmap.
+// 2. BFS starting from the target node till k levels, to get all the nodes at distance k from the target node.
+
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def findParent(self, root, net):
+        Q = deque()
+        Q.append(root)
+        
+        while len(Q) > 0:
+            node = Q.popleft()
+            
+            if node.left != None:
+                Q.append(node.left)
+                net[node.left] = node
+            if node.right != None:
+                Q.append(node.right)
+                net[node.right] = node
+        
+    
+    def distanceK(self, root: TreeNode, target: TreeNode, k: int) -> List[int]:
+        net = dict()
+        
+        self.findParent(root, net)
+        
+        count = 0
+        
+        Q = deque()
+        Q.append(target)
+        visited = {target}
+        
+        while len(Q) > 0 and count < k:
+            n = len(Q)
+            
+            for i in range(n):
+                node = Q.popleft()
+                
+                if node.left and (node.left not in visited):
+                    Q.append(node.left)
+                    visited.add(node.left)
+                    
+                if node.right and (node.right not in visited):
+                    Q.append(node.right)
+                    visited.add(node.right)
+                    
+                if (node in net) and (net[node] not in visited):
+                    Q.append(net[node])
+                    visited.add(net[node])
+            
+            count += 1
+                    
+        
+        ans = []
+        while len(Q) > 0:
+            node = Q.popleft()
+            ans.append(node.val)
+            
+        return ans
+        
