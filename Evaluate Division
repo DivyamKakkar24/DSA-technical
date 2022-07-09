@@ -1,0 +1,45 @@
+// LC: Evaluate Division
+
+class Solution:
+    def DFS(self, src, des, visited, graph, curr):
+        if (src not in graph) or (des not in graph) or (src in visited):
+            return -1
+        
+        if src == des:
+            return curr
+        
+        visited.add(src)
+        
+        for nbr in graph[src]:
+            prod = self.DFS(nbr[0], des, visited, graph, curr * nbr[1])
+            
+            if prod != -1:
+                return prod
+        
+        return -1
+            
+    
+    def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
+        
+        graph = defaultdict(list)
+        for i in range(len(values)):
+            u, v = equations[i]  # u / v
+            val = values[i]
+            
+            graph[u].append((v, val))
+            graph[v].append((u, 1 / val))
+            
+
+        ans = []
+        
+        # Each query is independent
+        for q in queries:
+            src, des = q[0], q[1]
+            visited = set()
+            
+            ok = self.DFS(src, des, visited, graph, 1.0)
+            
+            ans.append(ok)
+        
+        return ans
+        
