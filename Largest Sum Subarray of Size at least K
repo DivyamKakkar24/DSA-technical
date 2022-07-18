@@ -1,0 +1,28 @@
+// Largest Sum Subarray of Size at least K
+
+def maxSumWithK( A, n, k):
+    net = [0] * n
+    
+    # Kadane
+    s = 0
+    for i in range(n):
+        s += A[i]
+        net[i] = s
+        if s < 0:
+            s = 0
+    
+    maxSum = 0
+    
+    for i in range(k):
+        maxSum += A[i]
+    
+    # Slide and compare Sum
+    s = maxSum
+    for j in range(k, n):
+        s += (A[j] - A[j - k])
+        prev = net[j - k]  # for subarray of size atleast K (greater than K)
+        
+        maxSum = max([maxSum, s, s + prev])
+    
+    return maxSum
+    
