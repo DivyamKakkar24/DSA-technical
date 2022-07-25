@@ -1,0 +1,118 @@
+// Merge k Sorted Lists
+
+// 3 solutions
+
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+
+# 1. 
+
+class Solution:
+    def merge(self, l1, l2):
+        head = temp = ListNode(0)
+        
+        while l1 and l2:
+            if l1.val < l2.val:
+                temp.next = l1
+                l1 = l1.next
+            else:
+                temp.next = l2
+                l2 = l2.next
+            temp = temp.next
+        
+        if l1:
+            temp.next = l1
+            # l1 = l1.next
+        
+        if l2:
+            temp.next = l2
+        
+        return head.next
+    
+    def mergeKLists(self, A: List[Optional[ListNode]]) -> Optional[ListNode]:
+        if A == []:
+            return None
+        
+        ok = A[0]
+        
+        for a in A[1:]:
+            ok = self.merge(ok, a)
+        
+        return ok
+        
+        
+# 2. 
+
+class Solution:
+    def merge(self, l1, l2):
+        if l1 == None:
+            return l2
+        if l2 == None:
+            return l1
+        
+        head = temp = ListNode(0)
+        
+        if l2.val < l1.val:
+            l1, l2 = l2, l1
+        
+        head.next = l1
+        
+        while l1 and l2:
+            while l1 and l1.val <= l2.val:
+                temp = l1
+                l1 = l1.next
+
+            temp.next = l2
+            l1, l2 = l2, l1
+            
+        return head.next
+    
+    def mergeKLists(self, A: List[Optional[ListNode]]) -> Optional[ListNode]:
+        if A == []:
+            return None
+        
+        ok = A[0]
+        
+        for a in A[1:]:
+            ok = self.merge(ok, a)
+        
+        return ok
+
+
+# 3. Using min Heap
+
+class Solution:
+    def mergeKLists(self, A: List[Optional[ListNode]]) -> Optional[ListNode]:
+        minHeap = []
+        count = 0
+        
+        for l in A:
+            if l != None:
+                count += 1
+                ok = (l.val, count, l)
+
+                heappush(minHeap, ok)
+        
+        head = temp = ListNode(0)
+        
+        while len(minHeap) > 0:
+            val, c, l = heappop(minHeap)
+            
+            temp.next = l
+            l = l.next
+            temp = temp.next
+            
+            if l != None:
+                count += 1
+                ok = (l.val, count, l)
+                
+                heappush(minHeap, ok)
+                
+        
+        return head.next
+                
