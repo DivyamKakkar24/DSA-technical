@@ -1,0 +1,41 @@
+// LC: Kth Smallest Element in a Sorted Matrix
+
+# Using Binary Search
+
+class Solution:
+    def elementsLessEq(self, mid, mat):
+        i = 0
+        j = len(mat) - 1
+        
+        net = 0
+        while i < len(mat) and j >= 0:
+            if mat[i][j] > mid:
+                j -= 1
+            else:
+                net += (j + 1)
+                i += 1
+        
+        return net
+        
+    
+    def kthSmallest(self, mat: List[List[int]], k: int) -> int:
+        n = len(mat)
+        
+        low = mat[0][0]
+        high = mat[n - 1][n - 1]
+        
+        ans = -1
+        
+        while low <= high:
+            mid = (low + high) // 2
+            
+            count = self.elementsLessEq(mid, mat) 
+            
+            if count < k:
+                low = mid + 1
+            elif count >= k:
+                ans = mid
+                high = mid - 1
+        
+        return ans
+        
