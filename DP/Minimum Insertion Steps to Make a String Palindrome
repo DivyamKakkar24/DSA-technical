@@ -1,0 +1,56 @@
+// Minimum Insertion Steps to Make a String Palindrome
+
+
+# Approach 1: Memoization (Implementation)
+class Solution:
+    def solve(self, i, j, s, memo):
+        if i >= j:
+            return 0
+        
+        key = (i, j)
+        if key in memo:
+            return memo[key]
+        
+        if s[i] == s[j]:
+            return 0 + self.solve(i + 1, j - 1, s, memo)
+        
+        memo[key] = 1 + min(self.solve(i, j - 1, s, memo), self.solve(i + 1, j, s, memo))
+        return memo[key]
+    
+
+    def minInsertions(self, s: str) -> int:
+        memo = dict()
+        ans = self.solve(0, len(s) - 1, s, memo)
+        
+        return ans
+        
+
+# Approach 2: Number of Insertions = Length_of_String - Longest_Palindromic_Subsequence
+
+class Solution:
+    def minInsertions(self, s: str) -> int:
+        n = len(s)
+        
+        s2 = s[::-1]
+        
+        DP = [[0] * (n + 1) for i in range(n + 1)]
+        
+        
+        for i in range(1, n + 1):
+            for j in range(1, n + 1):
+                if s[i - 1] == s2[j - 1]:
+                    DP[i][j] = 1 + DP[i - 1][j - 1]
+                else:
+                    DP[i][j] = max(DP[i - 1][j], DP[i][j - 1])
+        
+        maxPalindromeLen = DP[n][n]
+        
+        ans = n - maxPalindromeLen
+        
+        return ans
+        
+
+
+
+
+
