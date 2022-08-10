@@ -1,0 +1,32 @@
+// Convert Sorted Array to Binary Search Tree
+
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def recur(self, left, right, A):
+        if right < left:
+            return None
+        
+        mid = (left + right) // 2
+        
+        node = TreeNode(A[mid])
+        
+        node.left = self.recur(left, mid - 1, A)
+        node.right = self.recur(mid + 1, right, A)
+        
+        return node
+        
+    
+    def sortedArrayToBST(self, A: List[int]) -> Optional[TreeNode]:
+        left = 0
+        right = len(A) - 1
+        
+        return self.recur(left, right, A)
+        
+# Time: O(n)
+# Space: O(logn)
