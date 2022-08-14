@@ -1,0 +1,53 @@
+// Word Ladder
+
+# shortest transformation sequence length
+
+class Solution:
+    def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
+        available = set()
+        isPresent = False
+        
+        for s in wordList:
+            available.add(s)
+            if s == endWord:
+                isPresent = True
+        
+        if not isPresent:
+            return 0
+        
+        Q = deque()
+        Q.append(beginWord)
+        
+        level = 1
+        
+        while len(Q) > 0:
+            n = len(Q)
+            
+            for i in range(n):
+                s = Q.popleft()
+                A = list(s)
+                
+                for j in range(len(A)):
+                    for c in ascii_lowercase:
+                        B = A[:]
+                        B[j] = c
+                        
+                        new_s = ''.join(B)
+                        
+                        if new_s == s:
+                            continue
+                        
+                        if new_s == endWord:
+                            return level + 1
+                        
+                        if new_s in available:
+                            Q.append(new_s)
+                            available.remove(new_s)
+            
+            level += 1
+        
+        return 0
+                        
+                
+        
+        
