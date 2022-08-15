@@ -1,0 +1,34 @@
+// Largest sub-tree sum
+
+// Find the subtree with maximum sum and output that maximum sum. 
+
+
+# Following is the TreeNode class structure:
+class BinaryTreeNode:
+    def __init__(self, data):
+        self.val = data
+        self.left = None
+        self.right = None
+
+
+def largestSubtreeSum(root):
+    # Write your code here. 
+    ans = float('-inf')
+    
+    def solve(node):
+        nonlocal ans
+        if node == None:
+            return 0
+        
+        l = solve(node.left)
+        r = solve(node.right)
+        
+        summ = node.data + l + r
+        
+        ans = max(ans, summ)
+        
+        return summ
+    
+    solve(root)
+    
+    return ans
