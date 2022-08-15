@@ -1,0 +1,46 @@
+// Segment Tree: Query, Find maximum in given range.
+
+
+def buildTree(ind, low, high, A, seg):
+    if low == high:
+        seg[ind] = A[low]
+        return
+
+    mid = (low + high) // 2
+    buildTree(ind * 2 + 1, low, mid, A, seg)
+    buildTree(ind * 2 + 2, mid + 1, high, A, seg)
+
+    seg[ind] = max(seg[ind * 2 + 1], seg[ind * 2 + 2])
+
+
+def query(ind, low, high, l, r, seg):
+    if (low >= l and high <= r):
+        return seg[ind]
+
+    if (high < l or low > r):
+        return float('-inf')
+    
+    mid = (low + high) // 2
+
+    left = query(2 * ind + 1, low, mid, l, r, seg)
+    right = query(2 * ind + 2, mid + 1, high, l, r, seg)
+
+    return max(left, right)
+
+if __name__ == '__main__':
+    n = int(input())
+    A = list(map(int, input().split()))
+
+    seg = [0] * (4 * n)
+
+    buildTree(0, 0, n - 1, A, seg)  # ind, left, right
+
+    q = int(input())
+
+    while q != 0:
+        l, r = map(int, input().split())
+
+        print(query(0, 0, n - 1, l, r, seg))
+
+        q -= 1
+    
