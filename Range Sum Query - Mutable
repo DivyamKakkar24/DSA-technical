@@ -1,0 +1,71 @@
+// Range Sum Query - Mutable
+
+# Time Complexity per Query / per Update:
+# Construction = O(N), 
+# Query = O(logN), i.e height of tree
+# Update = O(logN)                                      
+
+
+class NumArray:
+
+    def __init__(self, A: List[int]):
+        n = len(A)
+        self.A = A
+        self.ST = [0] * (4 * n)
+        
+        def constructST(i, l, r):
+            if l == r:
+                self.ST[i] = A[l]
+                return A[l]
+            
+            mid = (l + r) // 2
+            
+            self.ST[i] = constructST(2 * i + 1, l, mid) + constructST(2 * i + 2, mid + 1, r)
+            
+            return self.ST[i]
+        
+        constructST(0, 0, n - 1)
+        
+
+    def update(self, pos: int, val: int) -> None:
+        n = len(self.A)
+        diff = val - self.A[pos]
+        self.A[pos] = val 
+        
+        def update(i, sl, sr):
+            if sl > pos or sr < pos:
+                return
+            
+            self.ST[i] += diff
+            
+            if sl != sr:
+                mid = (sl + sr) // 2
+                
+                update(2 * i + 1, sl, mid)
+                update(2 * i + 2, mid + 1, sr)
+                
+        update(0, 0, n - 1)
+
+        
+    def sumRange(self, l: int, r: int) -> int:
+        n = len(self.A)
+        
+        def getSum(i, sl, sr):
+            if l <= sl and r >= sr:
+                return self.ST[i]
+            
+            if sr < l or sl > r:
+                return 0
+            
+            mid = (sl + sr) // 2
+            
+            return getSum(2 * i + 1, sl, mid) + getSum(2 * i + 2, mid + 1, sr)
+        
+        return getSum(0, 0, n - 1)
+        
+
+
+# Your NumArray object will be instantiated and called as such:
+# obj = NumArray(nums)
+# obj.update(index,val)
+# param_2 = obj.sumRange(left,right)
