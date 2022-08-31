@@ -1,0 +1,54 @@
+// Pacific Atlantic Water Flow
+
+# Time: O(mn), 
+# Space: O(mn)
+
+class Solution:
+    def dfs(self, r, c, visited, prev, heights):
+        if ((r, c) in visited or 
+            r < 0 or c < 0 or 
+            r >= len(heights) or 
+            c >= len(heights[0]) or
+            heights[r][c] < prev):
+            return
+        
+        visited.add((r, c))
+        
+        moves = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+        
+        for m in moves:
+            i = r + m[0]
+            j = c + m[1]
+            
+            self.dfs(i, j, visited, heights[r][c], heights)
+        
+    
+    def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
+        m = len(heights)
+        n = len(heights[0])
+        
+        pacific, atlantic = set(), set()
+        
+        
+        # starting from First row Pacific and Last row Atlantic
+        for i in range(n):
+            self.dfs(0, i, pacific, heights[0][i], heights)
+            self.dfs(m - 1, i, atlantic, heights[m - 1][i], heights)
+            
+        
+        # starting from First Column Pacific and Last Column Atlantic
+        for j in range(m):
+            self.dfs(j, 0, pacific, heights[j][0], heights)
+            self.dfs(j, n - 1, atlantic, heights[j][n - 1], heights)
+        
+        
+        ans = []
+        for point in pacific:
+            if point in atlantic:
+                ans.append(point)
+        
+        return ans
+    
+        
+        
+        
