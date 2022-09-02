@@ -1,0 +1,71 @@
+// Split Array Largest Sum
+
+
+# Brute force
+
+class Solution:
+    def solve(self, A, m):
+        if m == 0:
+            return 0
+        
+        if m == 1:
+            return sum(A)
+        
+        net = float('inf')
+        
+        for i in range(1, len(A) + 1):
+            left = sum(A[:i])
+            right = self.solve(A[i:], m - 1)
+            
+            net = min(net, max(left, right))
+        
+        return net
+    
+    def splitArray(self, A: List[int], m: int) -> int:
+        
+        return self.solve(A, m)
+        
+
+# Binary Search
+
+# Time: O(n * log(sum(A)))
+# Space: O(1)
+
+class Solution:
+    def isValid(self, A, net, m):
+        count = 1
+        s = 0
+        
+        for i in range(len(A)):
+            if s + A[i] > net:
+                count += 1
+                s = A[i]
+            else:
+                s += A[i]
+        
+        if count <= m:
+            return True
+        
+        return False
+        
+    
+    def splitArray(self, A: List[int], m: int) -> int:
+        # Minimize Largest Sum
+        # Can split the array in at max m subarrays
+        
+        low = max(A)
+        high = sum(A)
+        
+        ans = high
+        
+        while low <= high:
+            mid = (low + high) // 2
+            
+            if self.isValid(A, mid, m):
+                ans = mid
+                high = mid - 1
+            else:
+                low = mid + 1
+        
+        return ans
+
