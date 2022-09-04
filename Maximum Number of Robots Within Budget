@@ -1,0 +1,41 @@
+// 2398. Maximum Number of Robots Within Budget
+
+
+# Sliding Window Approach
+
+class Solution:
+    def maximumRobots(self, chargeTimes: List[int], runningCosts: List[int], budget: int) -> int:
+        n = len(chargeTimes)
+        maxHeap = []
+        freq = defaultdict(int)
+        bag = set()
+        
+        i = 0
+        maxRobots = 0
+        summ = 0
+        
+        for j in range(n):
+            summ += runningCosts[j]
+            freq[chargeTimes[j]] += 1
+            
+            if chargeTimes[j] not in bag:
+                bag.add(chargeTimes[j])
+                heappush(maxHeap, -chargeTimes[j])
+            
+            while len(maxHeap) > 0 and (-maxHeap[0] + (j - i + 1) * summ) > budget:
+                e = runningCosts[i]
+                c = chargeTimes[i]
+                summ -= e
+                
+                if c == -maxHeap[0]:
+                    freq[c] -= 1
+                    if freq[c] == 0:
+                        heappop(maxHeap)
+                        bag.remove(c)
+            
+                i += 1
+            
+            maxRobots = max(maxRobots, j - i + 1)
+        
+        return maxRobots
+        
