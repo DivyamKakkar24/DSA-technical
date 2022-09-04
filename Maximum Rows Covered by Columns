@@ -1,0 +1,35 @@
+// 2397. Maximum Rows Covered by Columns
+
+
+# Time: O(4096 * m * n)
+
+class Solution:
+    def maximumRows(self, mat: List[List[int]], cols: int) -> int:
+        maxRows = 0
+        
+        m = len(mat)
+        n = len(mat[0])
+        
+        for i in range(2 ** n):
+            t = bin(i)[2:]
+            s = t.zfill(n)[::-1]
+            
+            if s.count('1') == cols:
+                net = 0
+                
+                for r in range(m):
+                    A = mat[r]
+                    count = A.count(1)
+
+                    for c in range(n):
+                        if s[c] == '1' and A[c] == 1:
+                            count -= 1
+                    
+                    if count == 0:
+                        net += 1
+                
+                if net > maxRows:
+                    maxRows = net
+        
+        return maxRows
+                
