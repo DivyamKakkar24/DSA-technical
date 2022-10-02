@@ -1,0 +1,52 @@
+// Number of Dice Rolls With Target Sum
+
+// Similar to coin change problem
+
+# Memoization
+class Solution:
+    def solve(self, n, k, target, memo):
+        if n == 0:
+            if target == 0:
+                return 1
+            return 0
+
+        key = (n, target)
+        if key in memo:
+            return memo[key]
+
+        net = 0
+        for i in range(1, k + 1):
+            if target >= i:
+                net += self.solve(n - 1, k, target - i, memo)
+
+        memo[key] = net % 1000000007
+
+        return memo[key]
+
+
+    def numRollsToTarget(self, n: int, k: int, target: int) -> int:
+        memo = dict()
+        ans = self.solve(n, k, target, memo)
+
+        return ans
+
+
+
+# Tabulation
+class Solution:
+    def numRollsToTarget(self, n: int, k: int, target: int) -> int:
+        
+        dp = [[0] * (target + 1) for i in range(n + 1)]
+
+        dp[0][0] = 1
+
+        for i in range(1, n + 1):
+            for summ in range(1, target + 1):
+                
+                for j in range(1, k + 1):
+                    if summ - j >= 0:
+                        dp[i][summ] += (dp[i - 1][summ - j]) % 1000000007
+        
+        return (dp[n][target] % 1000000007)
+
+
