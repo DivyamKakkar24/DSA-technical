@@ -1,0 +1,36 @@
+// Minimum Difficulty of a Job Schedule
+
+# Using Memoization
+
+class Solution:
+    def solve(self, ind, A, d, memo):
+        if d == 1:
+            return max(A[ind:])
+
+        key = (ind, d)
+        if key in memo:
+            return memo[key]
+
+        n = len(A)
+        maxi = float('-inf')
+        net = float('inf')
+        
+        for i in range(ind, n - d + 1):
+            maxi = max(maxi, A[i])
+            net = min(net, maxi + self.solve(i + 1, A, d - 1, memo))
+        
+        memo[key] = net
+        return memo[key]
+
+
+    def minDifficulty(self, jobDifficulty: List[int], d: int) -> int:
+        n = len(jobDifficulty)
+
+        if n < d:
+            return -1
+
+        memo = dict()
+        ans = self.solve(0, jobDifficulty, d, memo)
+
+        return ans
+        
