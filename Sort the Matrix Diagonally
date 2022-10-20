@@ -1,0 +1,50 @@
+// Sort the Matrix Diagonally
+
+class Solution:
+    def diagonalSort(self, mat: List[List[int]]) -> List[List[int]]:
+        # map for upper half
+        net1 = defaultdict(list)
+
+        rows, cols = len(mat), len(mat[0])
+
+        for i in range(cols):
+            r, c = 0, i
+            key = r + c 
+            while r < rows and c < cols:
+                net1[key].append(mat[r][c])
+                r += 1
+                c += 1
+        
+            net1[key].sort()
+        
+        # map for lower half
+        net2 = defaultdict(list)
+
+        for i in range(rows):
+            r, c = i, 0
+            key = r + c
+            while r < rows and c < cols:
+                net2[key].append(mat[r][c])
+                r += 1
+                c += 1
+
+            net2[key].sort()
+        
+        for i in range(cols):
+            r, c = 0, i 
+            key = r + c 
+            for k in net1[key]:
+                mat[r][c] = k 
+                r += 1
+                c += 1
+        
+        for j in range(rows):
+            r, c = j, 0
+            key = r + c 
+            for k in net2[key]:
+                mat[r][c] = k 
+                r += 1
+                c += 1
+        
+        return mat
+        
