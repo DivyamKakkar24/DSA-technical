@@ -1,0 +1,36 @@
+// LC 2492. Minimum Score of a Path Between Two Cities
+
+// Return the minimum possible score of a path between cities 1 and n.
+
+# BFS
+
+class Solution:
+    def minScore(self, n: int, roads: List[List[int]]) -> int:
+
+        graph = defaultdict(list)
+        visited = [0] * (n + 1)
+
+        for road in roads:
+            a, b, dist = road
+            graph[a].append([b, dist])
+            graph[b].append([a, dist])
+
+        # node 1 and n in same component
+        
+        Q = deque()
+        Q.append(1)
+        ans = float('inf')
+
+        while len(Q) > 0:
+            node = Q.popleft()
+            visited[node] = 1
+
+            for nbr in graph[node]:
+                a, dist = nbr
+
+                if visited[a] == 0:
+                    Q.append(a)
+                    if dist < ans:
+                        ans = dist
+        
+        return ans
