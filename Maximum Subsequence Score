@@ -1,0 +1,31 @@
+// LC 2542. Maximum Subsequence Score
+
+// Good Question
+
+class Solution:
+    def maxScore(self, A: List[int], B: List[int], k: int) -> int:
+        maxi = 0 # ans
+        net = []
+
+        for i in range(len(A)):
+            net.append([B[i], A[i]])
+        
+        net.sort(key = lambda x: x[0], reverse = True)
+
+        minHeap = [] # for top k in A
+        summ = 0
+
+        for i in range(len(B)):
+            if len(minHeap) < k:
+                heappush(minHeap, net[i][1])  # which is element in A
+                summ += net[i][1]
+            else:
+                if minHeap[0] < net[i][1]:
+                    summ -= heappop(minHeap)
+                    heappush(minHeap, net[i][1])
+                    summ += net[i][1]
+
+            if i >= k - 1:    
+                maxi = max(maxi, net[i][0] * summ)
+        
+        return maxi
