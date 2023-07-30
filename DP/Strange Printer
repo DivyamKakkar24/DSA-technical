@@ -1,0 +1,36 @@
+// Strange Printer
+
+// Matrix Chain Multiplication
+
+
+class Solution:
+    def solve(self, i, j, s, memo):
+        if i == j:
+            return 1
+
+        if (i, j) in memo:
+            return memo[(i, j)]
+
+        net = float('inf')
+        
+        for k in range(i, j):
+            one = self.solve(i, k, s, memo)
+            two = self.solve(k + 1, j, s, memo)
+
+            net = min(net, one + two)
+        
+        if s[i] == s[j]:
+            memo[(i, j)] = net - 1
+        else:
+            memo[(i, j)] = net
+        
+        return memo[(i, j)]
+
+
+    def strangePrinter(self, s: str) -> int:
+        #mcm
+        ans = self.solve(0, len(s) - 1, s, dict())
+
+        return ans
+
+        
